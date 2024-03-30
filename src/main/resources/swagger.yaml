@@ -1,0 +1,135 @@
+openapi: 3.0.3
+info:
+  title: API de Produtos
+  description: API para operações CRUD de Produtos
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: produtos
+    description: Operações relacionadas a Produtos
+paths:
+  /produtos:
+    post:
+      tags:
+        - produtos
+      summary: Cria um novo produto
+      operationId: criarProduto
+      requestBody:
+        description: Objeto do Produto a ser criado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProdutoRequest'
+      responses:
+        '201':
+          description: Produto criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProdutoResponse'
+    get:
+      tags:
+        - produtos
+      summary: Obtém todos os produtos
+      operationId: listarProdutos
+      responses:
+        '200':
+          description: Lista de produtos obtida com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProdutoResponse'
+  /produtos/{id}:
+    get:
+      tags:
+        - produtos
+      summary: Obtém um produto pelo ID
+      operationId: obterProdutoPorId
+      parameters:
+        - name: id
+          in: path
+          description: ID do produto a ser obtido
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Produto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProdutoResponse'
+        '404':
+          description: Produto não encontrado
+    put:
+      tags:
+        - produtos
+      summary: Atualiza um produto existente
+      operationId: atualizarProduto
+      parameters:
+        - name: id
+          in: path
+          description: ID do produto a ser atualizado
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Objeto do Produto atualizado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProdutoRequest'
+      responses:
+        '200':
+          description: Produto atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProdutoResponse'
+        '404':
+          description: Produto não encontrado
+    delete:
+      tags:
+        - produtos
+      summary: Deleta um produto
+      operationId: deletarProduto
+      parameters:
+        - name: id
+          in: path
+          description: ID do produto a ser deletado
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Produto deletado com sucesso
+        '404':
+          description: Produto não encontrado
+components:
+  schemas:
+    ProdutoRequest:
+      type: object
+      required:
+        - nome
+        - descricao
+      properties:
+        nome:
+          type: string
+          example: Produto A
+        descricao:
+          type: string
+          example: Descrição do Produto A
+    ProdutoResponse:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: Produto A
+        descricao:
+          type: string
+          example: Descrição do Produto A
